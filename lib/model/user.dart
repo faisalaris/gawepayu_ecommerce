@@ -7,8 +7,9 @@ class User{
   String fullname;
   String gender;
   String jwt;
+  String cartId;
 
-  User({ @required this.id, @required this.username,@required this.email, this.fullname,this.gender, @required this.jwt});
+  User({ @required this.id, @required this.username,@required this.email, this.fullname,this.gender, @required this.jwt,@required this.cartId});
 
   factory User.fromJson(Map <String,dynamic> json){
     return User(
@@ -17,7 +18,8 @@ class User{
       email : json['email'],
       fullname : json['Fullname'],
       gender : json['Gender'],
-      jwt : json['jwt']
+      jwt : json['jwt'],
+      cartId : json['cart_id']
     );
   }
 }

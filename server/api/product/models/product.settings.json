@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "name": "Product"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "Image": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "kondisi": {
+      "type": "string"
+    },
+    "Berat": {
+      "type": "string"
+    },
+    "Deskripsi": {
+      "type": "richtext"
+    },
+    "category": {
+      "model": "category"
+    }
+  }
+}

@@ -3,6 +3,7 @@ import 'package:gawepayu_ecommerce/model/errorMsge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gawepayu_ecommerce/api/api_service.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class RegisterPageState extends State<RegisterPage> {
   bool _isFemale = false;
   bool _isSubmitting,_obsecureText = true;
 
-  static const link = '192.168.100.25:1337';
 
   Widget _showTitle() {
     return Text('Daftar Akun baru',
@@ -99,10 +99,10 @@ class RegisterPageState extends State<RegisterPage> {
                       setState(() {
                         _isMale = value;
                         _isFemale = false;
-                        if(_isMale == true){
+                        if(_isMale == true && _isFemale == false){
                          return _gender = 'M' ;
                          }
-                        else if (_isFemale == true){
+                        else if (_isFemale == true && _isMale == false){
                         return _gender ='F' ; }
                         else
                         return _gender = 'M';
@@ -221,7 +221,7 @@ class RegisterPageState extends State<RegisterPage> {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      .copyWith(color: Theme.of(context).accentColor)),
+                      .copyWith(color: Theme.of(context).colorScheme.secondary)),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).primaryColor),
@@ -251,7 +251,7 @@ void _submit() {
 
   void _registerUser() async {
     setState(() => _isSubmitting = true);
-    Uri url = new Uri.http(link,'/auth/local/register');
+    Uri url = new Uri.https(AppLink.link3,'/auth/local/register');
     http.Response response = await http.post(url,
         body: {"username": _userName, "email": _emailHP, "password": _password, "Fullname": _nama, "Gender":_gender});
     final responseData = json.decode(response.body);
@@ -273,7 +273,7 @@ void _submit() {
 
    void _redirectUser() {
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/');
     });
   }
 

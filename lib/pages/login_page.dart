@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gawepayu_ecommerce/api/api_service.dart';
 import 'package:gawepayu_ecommerce/model/errorMsge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -16,8 +17,6 @@ class LoginPageState extends State<LoginPage> {
   bool _isSubmitting,_obsecureText = true;
   bool _rememberMe = false ;
   String _userName,_password;
-
-  static const link = '192.168.100.25:1337';
 
   Widget _showTitle() {
     return Text('Masuk',
@@ -175,7 +174,7 @@ class LoginPageState extends State<LoginPage> {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      .copyWith(color: Theme.of(context).accentColor)),
+                      .copyWith(color: Theme.of(context).colorScheme.secondary)),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).primaryColor),
@@ -204,7 +203,7 @@ void _submit() {
 
  void _registerUser() async {
     setState(() => _isSubmitting = true);
-    Uri url = new Uri.http(link,'/auth/local');
+    Uri url = new Uri.https(AppLink.link3,'/auth/local');
     http.Response response = await http.post(url,
         body: {"identifier": _userName, "password": _password, });
     final responseData = json.decode(response.body);
@@ -223,10 +222,36 @@ void _submit() {
       _showErrorSnack(errorMsg);
     }
   }
-
+  
+  //  void _registerUser() async {
+  //   setState(() => _isSubmitting = true);
+  //   final _body = {"username": _userName, "password": _password, };
+  //   final _body2 = json.encode(_body);
+  //   final _header = {"Content-Type": "application/json"};
+  //   Uri url = new Uri.http(AppLink.link2,AppLink.path + 'sessions');
+  //   http.Response response = await http.post(url,
+  //        headers: _header,
+  //       body: _body2);
+  //   final responseData = json.decode(response.
+  //   body);
+  //   if (response.statusCode == 201){
+  //       setState(() => _isSubmitting = false);
+  //       //_storeUserData(responseData);
+  //       _showSuccessSnack();
+  //       _redirectUser();
+  //       print(responseData);
+  //   }
+  //   else {
+  //     setState(() => _isSubmitting = false) ;
+  //   ErrorMessage errormessage = new ErrorMessage();
+  //   errormessage = ErrorMessage.fromJson(responseData);
+  //     final String errorMsg = errormessage.data[0].messages[0].message;
+  //     _showErrorSnack(errorMsg);
+  //   }
+  // }
    void _redirectUser() {
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/');
     });
   }
 
