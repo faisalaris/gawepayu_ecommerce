@@ -80,6 +80,12 @@ flutter:
     - promo2.png
     - promo3.png
     - promo4.jpeg
+    - BCA.png
+    - BNI.png
+    - Mandiri.png
+    - BRI.png
+    - CIMB.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

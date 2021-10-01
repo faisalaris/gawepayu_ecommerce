@@ -9,11 +9,12 @@ class AppState {
   final List<Category> category;
   final List<Product> product;
   final List<Product> cartProducts;
+  final List<Product> checkoutProducts;
   
 
-  AppState({@required this.user,@required this.category,@required this.product,@required this.cartProducts});
+  AppState({@required this.user,@required this.category,@required this.product,@required this.cartProducts,@required this. checkoutProducts,});
 
   factory AppState.initial() {
-    return AppState(user: null, category:[],product:[],cartProducts:[]);
+    return AppState(user: null, category:[],product:[],cartProducts:[],checkoutProducts:[]);
   }
 }

@@ -9,7 +9,8 @@ AppState appReducer(AppState state, dynamic action) {
     user: userReducer(state.user, action),
     category: categoryReducer(state.category, action),
     product: productReducer(state.product, action),
-    cartProducts: cartProducts(state.cartProducts, action)
+    cartProducts: cartProducts(state.cartProducts, action),
+    checkoutProducts: checkoutProducts(state.checkoutProducts, action)
   );
 }
 
@@ -52,4 +53,17 @@ List<Product> cartProducts(List<Product> cartProducts, dynamic action) {
     return action.cartProducts;
   }
   return cartProducts;
+}
+
+List<Product> checkoutProducts(List<Product> checkoutProducts, dynamic action) {
+   if (action is CheckoutCartProductAction) {
+    return action.checkoutProducts;
+  }
+   else if (action is AddRemoveCountCheckoutCartProductAction){
+    return action.checkoutProducts;
+  }
+   else if (action is RemoveChekoutCartProductAction){
+    return action.checkoutProducts;
+  }
+  return checkoutProducts;
 }

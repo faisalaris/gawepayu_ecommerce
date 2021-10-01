@@ -6,35 +6,33 @@ import 'package:gawepayu_ecommerce/model/Product.dart';
 import 'package:gawepayu_ecommerce/api/api_service.dart';
 import 'package:gawepayu_ecommerce/redux/actions.dart';
 
-class CartProductItem extends StatefulWidget {
+class CheckoutCartProductItem extends StatefulWidget {
 final Product itemcart;
 
- CartProductItem({this.itemcart});
+ CheckoutCartProductItem({this.itemcart});
 
   @override
-  CartProductItemState createState() => CartProductItemState();
+  CheckoutCartProductItemState createState() => CheckoutCartProductItemState();
 
 }
  
- class CartProductItemState extends State<CartProductItem> {
+ class CheckoutCartProductItemState extends State<CheckoutCartProductItem> {
   dynamic count = 0 ;
     void initState() {
     super.initState();
      count = widget.itemcart.jumlah ;
 }
   
-  dynamic _count = 0;
+
 
  void _increament(){
    setState((){ 
-     _count ++;
      count++;
    });
  } 
 
  void _decreament(){
    setState((){ 
-     _count --;
      count --;
    });
  } 
@@ -73,7 +71,7 @@ final Product itemcart;
                          GestureDetector(
                            onTap: () {
                                     StoreProvider.of<AppState>(context)
-                                    .dispatch(removeCartProductAction(widget.itemcart));
+                                    .dispatch(removeCheckoutCartProductAction(widget.itemcart));
                            }, // handle your image tap here
                            child: Icon(Icons.delete, color: Theme.of(context).primaryColor),
                          ),
@@ -82,7 +80,7 @@ final Product itemcart;
                                 onTap: () {
                                     _increament();
                                     StoreProvider.of<AppState>(context)
-                                    .dispatch(addRemoveCountCartProductAction(widget.itemcart,_count));                             
+                                    .dispatch(addRemoveCheckoutCountCartProductAction(widget.itemcart,count));
                                 }, // handle your image tap here
                                 child: Icon(Icons.add_circle, color: Theme.of(context).primaryColor),
                          ),
@@ -91,12 +89,15 @@ final Product itemcart;
                                 onTap: () {
                                     _decreament();
                                     StoreProvider.of<AppState>(context)
-                                    .dispatch(addRemoveCountCartProductAction(widget.itemcart,_count));              
+                                    .dispatch(addRemoveCheckoutCountCartProductAction(widget.itemcart,count));
+
                                 }, // handle your image tap here
                                 child: Icon(Icons.remove_circle, color: Theme.of(context).primaryColor),
                          ),
                           SizedBox(width: 15),
-                          Text(_count.toString())  
+                          Text(count.toString())  
+                           
+                             
                            ]
                          )
                         ]

@@ -197,3 +197,64 @@ class GetCartProductsAction {
 
   GetCartProductsAction(this._cartProducts);
 }
+
+
+/* Checkout Products Actions */
+
+ThunkAction<AppState> getCheckoutCartProductAction(List<Product> cartProduct) {
+  return (Store<AppState> store) {
+    final List<Product> cartProducts = cartProduct;
+     List<Product> checkoutcartProducts = [];
+    checkoutcartProducts = List.from(cartProducts);
+    store.dispatch(CheckoutCartProductAction(checkoutcartProducts));
+  };
+}
+
+ThunkAction<AppState> addRemoveCheckoutCountCartProductAction(Product chekoutcartProduct,dynamic count) {
+  return (Store<AppState> store) {
+    final List<Product> checkoutcartProducts = store.state.checkoutProducts;
+    final int index =
+        checkoutcartProducts.indexWhere((product) => product.id == chekoutcartProduct.id);
+    bool isInCart = index > -1 == true;
+    List<Product> updatedCheckoutCartProducts = List.from(checkoutcartProducts);
+    if (isInCart) {
+      updatedCheckoutCartProducts[index].jumlah = count ;
+    } 
+    store.dispatch(AddRemoveCountCheckoutCartProductAction(updatedCheckoutCartProducts));
+  };
+}
+
+ThunkAction<AppState> removeCheckoutCartProductAction(Product chekoutcartProduct) {
+  return (Store<AppState> store) {
+    final List<Product> checkoutcartProducts = store.state.checkoutProducts;
+    final int index =
+        checkoutcartProducts.indexWhere((product) => product.id == chekoutcartProduct.id);
+    List<Product> updatedCheckoutCartProducts = List.from(checkoutcartProducts);
+      updatedCheckoutCartProducts.removeAt(index);
+    store.dispatch(RemoveChekoutCartProductAction(updatedCheckoutCartProducts));
+  };
+}
+
+class CheckoutCartProductAction {
+  final List<Product> _checkoutcartProducts;
+
+  List<Product> get checkoutProducts => this._checkoutcartProducts;
+
+  CheckoutCartProductAction(this._checkoutcartProducts);
+}
+
+class AddRemoveCountCheckoutCartProductAction {
+  final List<Product> _checkoutcartProducts;
+
+  List<Product> get checkoutProducts => this._checkoutcartProducts;
+
+  AddRemoveCountCheckoutCartProductAction(this._checkoutcartProducts);
+}
+
+class RemoveChekoutCartProductAction {
+  final List<Product> _checkoutcartProducts;
+
+  List<Product> get checkoutProducts => this._checkoutcartProducts;
+
+  RemoveChekoutCartProductAction(this._checkoutcartProducts);
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gawepayu_ecommerce/pages/checkout_page.dart';
 import 'package:gawepayu_ecommerce/pages/home_page.dart';
 import 'package:gawepayu_ecommerce/pages/login_page.dart';
+import 'package:gawepayu_ecommerce/pages/payment_page.dart';
 import 'package:gawepayu_ecommerce/pages/register_page.dart';
 import 'package:gawepayu_ecommerce/pages/products_page.dart';
 import 'package:gawepayu_ecommerce/pages/cart_page.dart';
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
           '/register': (BuildContext context) => RegisterPage(),
           '/product': (BuildContext context) => ProductsPage(),
           '/cart' :  (BuildContext context) => CartPage(),
+          '/checkout' :  (BuildContext context) => CheckOutPage(),
+          '/Payment' : (BuildContext context) => PaymentPage (),
           '/': (BuildContext context) => HomePage(
             onInit :(){
               StoreProvider.of<AppState>(context).dispatch(getUserAction);

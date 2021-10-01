@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gawepayu_ecommerce/api/api_service.dart';
 import 'package:gawepayu_ecommerce/model/app_state.dart';
+import 'package:gawepayu_ecommerce/redux/actions.dart';
 import 'package:gawepayu_ecommerce/widgets/cartproduct_item.dart';
+import 'package:gawepayu_ecommerce/pages/checkout_page.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -75,8 +77,12 @@ class CartPageState extends State<CartPage> {
                  Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children:<Widget> [
-                     ElevatedButton(onPressed: (){  
-                     }, 
+                     ElevatedButton(onPressed: (){
+                    StoreProvider.of<AppState>(context)
+                                    .dispatch(getCheckoutCartProductAction(state.cartProducts));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return CheckOutPage (itemCart: state.cartProducts);
+            }));}, 
                      child: Text('Beli ( ${calculateTotalItem(state.cartProducts)} )'))
                   ],
                 ),
