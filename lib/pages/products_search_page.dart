@@ -2,33 +2,34 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gawepayu_ecommerce/model/app_state.dart';
+import 'package:gawepayu_ecommerce/model/category.dart';
+import 'package:gawepayu_ecommerce/model/Product.dart';
 import 'package:gawepayu_ecommerce/redux/actions.dart';
-import 'package:gawepayu_ecommerce/widgets/category_item.dart';
-import 'package:gawepayu_ecommerce/pages/cart_page.dart';
+import 'package:gawepayu_ecommerce/widgets/product_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:badges/badges.dart';
-import 'package:gawepayu_ecommerce/pages/products_search_page.dart';
 
-class HomePage extends StatefulWidget {
-  final void Function() onInit;
-  HomePage({this.onInit});
+
+class ProductsSearchPage extends StatefulWidget {
+final List<Product> itemPro;
+final String search;
+  ProductsSearchPage({this.itemPro,this.search});
 
   @override
-  HomePageState createState() => HomePageState();
+  ProductsSearchPageState createState() => ProductsSearchPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class ProductsSearchPageState extends State<ProductsSearchPage> {
   Icon _searchIcon = new Icon(Icons.search);
   String _searchText = '';
   final TextEditingController _filter = new TextEditingController();
+  List<Product> tempList2 = [];
   Widget _appBarTitle = new Text(
     'Search Product (deskripsi)',
     style: TextStyle(color: Colors.white),
   );
-  int _currentIndex = 0;
 
-  HomePageState() {
+  ProductsSearchPageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -44,31 +45,36 @@ class HomePageState extends State<HomePage> {
 
   void initState() {
     super.initState();
-    widget.onInit();
-  }
+      List<Product> tempList = [];
+      for (int i = 0; i < widget.itemPro.length; i++) {
+       if (widget.itemPro[i].name.toLowerCase().contains(widget.search.toLowerCase())) {
+          tempList.add(widget.itemPro[i]);
+          }
+       }
+       tempList2 =  tempList ;
+}
 
-  void _searchPressed() {
-    setState(() {
-      if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
-        this._appBarTitle = new TextField(
-          controller: _filter,
-          decoration: new InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              prefixIcon: new Icon(Icons.search),
-              hintText: 'Cari...'),
-        );
-      } else {
-        this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text('Search Product (deskripsi)',
-            style: TextStyle(color: Colors.white));
-        _filter.clear();
-      }
-    });
-  }
+  // void _searchPressed() {
+  //   setState(() {
+  //     if (this._searchIcon.icon == Icons.search) {
+  //       this._searchIcon = new Icon(Icons.close);
+  //       this._appBarTitle = new TextField(
+  //         controller: _filter,
+  //         decoration: new InputDecoration(
+  //             filled: true,
+  //             fillColor: Colors.white,
+  //             prefixIcon: new Icon(Icons.search),
+  //             hintText: 'Cari...'),
+  //       );
+  //     } else {
+  //       this._searchIcon = new Icon(Icons.search);
+  //       this._appBarTitle = new Text('Search Product (deskripsi)',
+  //           style: TextStyle(color: Colors.white));
+  //       _filter.clear();
+  //     }
+  //   });
+  // }
 
-//# Region Appbar
   Widget _appBar() {
     return PreferredSize(
         preferredSize: Size.fromHeight(80.0),
@@ -88,13 +94,7 @@ class HomePageState extends State<HomePage> {
                                 contentPadding: EdgeInsets.all(20),
                                 prefixIcon: GestureDetector(
                                   onTap: () {
-                                  Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return ProductsSearchPage(
-                                                  itemPro : state.product,search:_filter.text,
-                                                );
-                                              }));
+                                    
                                   },
                                   child: Icon(Icons.search_outlined),
                                 )                  
@@ -138,30 +138,8 @@ class HomePageState extends State<HomePage> {
             }));
   }
 
-  Widget _bottomBar() {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.contact_support),
-          label: "Hubungi kami",
-        )
-      ],
-      onTap: (index) {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-    );
-  }
-//# End Region Appbar
-
-//# Region Drawer
-  Widget _drawerBuilder() {
+  
+   Widget _drawerBuilder() {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
@@ -232,65 +210,24 @@ class HomePageState extends State<HomePage> {
       onTap: onTap,
     );
   }
-//# End Region Drawer
 
-//# Region Carousel image
-  Widget _carouselItem({String image}) {
-    return Container(
-      margin: EdgeInsets.all(6.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget _carouselImage() {
-    return CarouselSlider(
-      items: [
-        _carouselItem(image: "assets/promo1.jpeg"),
-        _carouselItem(image: "assets/promo2.png"),
-        _carouselItem(image: "assets/promo3.png"),
-        _carouselItem(image: "assets/promo4.jpeg"),
-      ],
-      options: CarouselOptions(
-        height: 180.0,
-        enlargeCenterPage: true,
-        autoPlay: true,
-        aspectRatio: 16 / 9,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enableInfiniteScroll: true,
-        autoPlayAnimationDuration: Duration(milliseconds: 800),
-        viewportFraction: 0.8,
-      ),
-    );
-  }
-
-//$ End Regiom Carousel image
-
-// Region Category
-  Widget _gridview(state) {
-     return Expanded(
+    Widget _gridview(state) {
+    return Expanded(
         child: SafeArea(
             top: false,
             bottom: false,
-            child:
-             GridView.builder(
-                shrinkWrap: true,
-                itemCount: state.category.length,
+            child: GridView.builder(
+                itemCount: tempList2.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
+                    crossAxisCount: 2,
                     mainAxisSpacing: 5.0,
                     crossAxisSpacing: 5.0,
                     ),
+                    
                 itemBuilder: (context, i) =>
-                   CategoryItem(itemCat: state.category[i], itemPro: state.product,))));
+                   ProductItem(itemPro: tempList2[i]))));
   }
 
-// End Region Category
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -303,17 +240,15 @@ class HomePageState extends State<HomePage> {
               converter: (store) => store.state,
               builder: (_, state) {
                 return Column(children: [
-                 _carouselImage(),
-                 SizedBox(height: 60),
                   Text("Produk"),
                   SizedBox(height: 20),
                   _gridview(state),
-                  ]);
+                ]);
               })
               ),
       
       )]),
-      bottomNavigationBar: _bottomBar(),
       );
   }
+
 }

@@ -75,18 +75,41 @@ class ProductsPageState extends State<ProductsPage> {
     });
   }
 
-Widget _appBar() {
+  Widget _appBar() {
     return PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: StoreConnector<AppState, AppState>(
             converter: (store) => store.state,
             builder: (context, state) {
-              return AppBar(centerTitle: true, title: _appBarTitle, actions: [
-                new IconButton(
-                  icon: _searchIcon,
-                  onPressed: _searchPressed,
-                ),state.user != null ?
-                new Badge(
+              return AppBar(
+                centerTitle: true, 
+                title: Padding(padding: const EdgeInsets.only(top:10.0),
+                 child:  Container( height:40,width: 250,
+                      child: TextFormField(
+                      controller: _filter,  
+                      decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
+                                contentPadding: EdgeInsets.all(20),
+                                prefixIcon: GestureDetector(
+                                  onTap: () {
+                                    
+                                  },
+                                  child: Icon(Icons.search_outlined),
+                                )                  
+                ),
+              ),  
+                       ) ,
+                ), 
+                
+                
+              actions: [
+                // new IconButton(
+                //   icon: _searchIcon,
+                //   onPressed: _searchPressed,),
+                state.user != null ?
+                new  Badge(
                       badgeContent: Text(state.cartProducts.length.toString()),
                       badgeColor: Colors.white,
                       child: IconButton(
@@ -114,6 +137,7 @@ Widget _appBar() {
               ]);
             }));
   }
+
   
    Widget _drawerBuilder() {
     return StoreConnector<AppState, AppState>(

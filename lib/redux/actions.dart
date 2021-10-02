@@ -69,7 +69,7 @@ class GetCategoryAction{
 // Product Action
 ThunkAction<AppState> getProductAction = (Store<AppState> store) async{
        Map<String, String> qParams = {
-      '_limit' : '-1'
+      '_limit' : '50'
     };  
 Uri url = new Uri.https(AppLink.link3,'/products',qParams);
 http.Response response = await http.get(url);
